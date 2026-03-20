@@ -1,57 +1,57 @@
 import { useState } from 'react';
 
 function TodoApp() {
-    const [tasks, setTasks] = useState([]);
-    const [inputValue, setInputValue] = useState("");
+    const [tareas, setTareas] = useState([]);
+    const [valorInput, setValorInput] = useState("");
 
-    const handleAddTask = () => {
-        if (!inputValue.trim()) return;
-        setTasks([...tasks, { id: crypto.randomUUID(), text: inputValue, completed: false }]);
-        setInputValue("");
+    const agregarTarea = () => {
+        if (!valorInput.trim()) return;
+        setTareas([...tareas, { id: crypto.randomUUID(), texto: valorInput, completada: false }]);
+        setValorInput("");
     };
 
-    const toggleTask = (id) => {
-        setTasks(tasks.map(t => t.id === id ? { ...t, completed: !t.completed } : t));
+    const alternarTarea = (id) => {
+        setTareas(tareas.map(t => t.id === id ? { ...t, completada: !t.completada } : t));
     };
 
-    const deleteTask = (id) => {
-        setTasks(tasks.filter(t => t.id !== id));
+    const eliminarTarea = (id) => {
+        setTareas(tareas.filter(t => t.id !== id));
     };
 
-    const pendingTasks = tasks.filter(t => !t.completed).length;
+    const pendientes = tareas.filter(t => !t.completada).length;
 
     return (
-        <div className="todo-app">
-            <h1 className="todo-app__title">Mis Tareas</h1>
+        <div className="app">
+            <h1 className="titulo">Mis Tareas</h1>
 
-            <div className="todo-app__input-wrapper">
+            <div className="campo">
                 <input
-                    className="todo-app__input"
+                    className="entrada"
                     type="text"
                     placeholder="Escribe una tarea..."
-                    value={inputValue}
-                    onChange={(e) => setInputValue(e.target.value)}
-                    onKeyDown={(e) => e.key === 'Enter' && handleAddTask()}
+                    value={valorInput}
+                    onChange={(e) => setValorInput(e.target.value)}
+                    onKeyDown={(e) => e.key === 'Enter' && agregarTarea()}
                 />
             </div>
 
-            <div className="todo-list">
-                {tasks.map(task => (
-                    <div key={task.id} className="todo-item">
+            <div className="lista">
+                {tareas.map(tarea => (
+                    <div key={tarea.id} className="item">
                         <input
                             type="checkbox"
-                            id={task.id}
-                            className="todo-item__checkbox"
-                            checked={task.completed}
-                            onChange={() => toggleTask(task.id)}
+                            id={tarea.id}
+                            className="check"
+                            checked={tarea.completada}
+                            onChange={() => alternarTarea(tarea.id)}
                         />
-                        <label htmlFor={task.id} className="todo-item__label">
-                            <span className="todo-item__text">{task.text}</span>
+                        <label htmlFor={tarea.id} className="etiqueta">
+                            <span className="texto">{tarea.texto}</span>
                         </label>
                         <button
-                            className="todo-item__delete"
-                            onClick={() => deleteTask(task.id)}
-                            title="Eliminar tarea"
+                            className="borrar"
+                            onClick={() => eliminarTarea(tarea.id)}
+                            title="Eliminar"
                         >
                             ✕
                         </button>
@@ -59,9 +59,9 @@ function TodoApp() {
                 ))}
             </div>
 
-            {tasks.length > 0 && (
-                <footer className="todo-footer">
-                    {pendingTasks} {pendingTasks === 1 ? 'tarea pendiente' : 'tareas pendientes'}
+            {tareas.length > 0 && (
+                <footer className="pie">
+                    {pendientes} {pendientes === 1 ? 'tarea pendiente' : 'tareas pendientes'}
                 </footer>
             )}
         </div>
